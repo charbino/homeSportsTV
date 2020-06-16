@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SiteController!{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Hello {{ controller_name }}! ✅</h1>
+        <div>
+            <h2>Ajouter un site</h2>
+
+            {{ form(form) }}
+        </div>
+
+        <div>
+            <h2>Sites</h2>
+            <ul class="list-group">
+                {% for site in sites %}
+                    <li class="list-group-item">
+                        {{ include('site/site.html.twig',{site:site}) }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
