@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SiteController!{% endblock %}
+{% block title %}Home Sports TV{% endblock %}
 
 {% block body %}
 
-    <div class="container">
-        <h1>Hello {{ controller_name }}! ✅</h1>
-        <div>
-            <h2>Ajouter un site</h2>
+<div class="container">
+    <h1>HomeSportsTV</h1>
+    <div>
+        <h2>Ajouter un site</h2>
 
-            {{ form(form) }}
-        </div>
+        {{ form(form) }}
+    </div>
 
-        <div>
-            <h2>Sites</h2>
-            <ul class="list-group">
-                {% for site in sites %}
-                    <li class="list-group-item">
+    <div>
+        <h2>Sites</h2>
+        <ul class="list-group">
+            {% for site in sites %}
+            <li class="list-group-item" id="site-{{ site.id }}">
                         {{ include('site/site.html.twig',{site:site}) }}
                     </li>
                 {% endfor %}

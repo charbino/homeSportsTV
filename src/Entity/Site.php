@@ -34,7 +34,7 @@ class Site
 
     public function setUrl(string $url): self
     {
-        $this->url = $url;
+        $this->url = strtolower($url);
 
         return $this;
     }
