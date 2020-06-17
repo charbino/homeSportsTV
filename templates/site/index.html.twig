@@ -3,24 +3,27 @@
 {% block title %}Home Sports TV{% endblock %}
 
 {% block body %}
+    {{ include('site/components/navbar.html.twig') }}
+    {{ include('site/components/modalDelete.html.twig') }}
 
-<div class="container">
-    <h1>HomeSportsTV</h1>
-    <div>
-        <h2>Ajouter un site</h2>
 
-        {{ form(form) }}
-    </div>
+    <div class="container">
+        <main role="main" class="py-md-3 pl-md-5 bd-content">
+            <div>
+                <h2>Ajouter un site</h2>
+                {{ form(form) }}
+            </div>
 
-    <div>
-        <h2>Sites</h2>
-        <ul class="list-group">
-            {% for site in sites %}
-            <li class="list-group-item" id="site-{{ site.id }}">
-                        {{ include('site/site.html.twig',{site:site}) }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div>
+                <h2>Sites</h2>
+                <ul class="list-group">
+                    {% for site in sites %}
+                        <li class="list-group-item" id="site-{{ site.id }}">
+                            {{ include('site/site.html.twig',{site:site}) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </main>
     </div>
 {% endblock %}

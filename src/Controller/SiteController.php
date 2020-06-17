@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SiteController extends AbstractController
 {
     /**
-     * @Route("/site", name="site_index")
+     * @Route("/", name="site_index")
      * @param Request $request
      * @param SiteRepository $repository
      * @return \Symfony\Component\HttpFoundation\Response
@@ -56,6 +57,25 @@ class SiteController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($site);
         $entityManager->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    /**
+     * @Route("/site/play/{id}", name="site_play", options = { "expose" = true })
+     * @ParamConverter("site", class="App\Entity\Site")
+     * @param Request $request
+     * @param Site $site
+     * @return JsonResponse
+     */
+    public function playSite(Request $request, Site $site)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw new HttpException(403, "Forbidden");
+        }
+        $process = new Process(['/usr/bin/chromium-browser','--app', $site->getUrl()]);
+        $process->run();
+
 
         return new JsonResponse(['success' => true]);
     }

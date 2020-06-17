@@ -17,7 +17,7 @@ class SiteType extends AbstractType
             ->add('url',UrlType::class,[
                 'label' => 'URL'
             ])
-            ->add('save', SubmitType::class, ['label' => 'Add site']);
+            ->add('save', SubmitType::class, ['label' => 'Ajouter un site']);
     }
 
     public function configureOptions(OptionsResolver $resolver)
