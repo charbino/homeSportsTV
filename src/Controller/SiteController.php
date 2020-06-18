@@ -73,10 +73,9 @@ class SiteController extends AbstractController
         if (!$request->isXmlHttpRequest()) {
             throw new HttpException(403, "Forbidden");
         }
-//        $process = new Process(['/usr/bin/chromium-browser','--app', $site->getUrl()]);
-        $process = new Process(['/usr/bin/firefox','-new-tab', $site->getUrl()]);
-        $process->run();
 
+        $process = new Process(['nohup','/usr/bin/firefox','-new-window', $site->getUrl(),'-P','web']);
+        $process->start(null,['DISPLAY'=>':0.0']);
 
         return new JsonResponse(['success' => true]);
     }
