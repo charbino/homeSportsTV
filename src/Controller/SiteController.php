@@ -7,11 +7,14 @@ use App\Form\SiteType;
 use App\Repository\SiteRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class SiteController
@@ -66,6 +69,7 @@ class SiteController extends AbstractController
      * @ParamConverter("site", class="App\Entity\Site")
      * @param Request $request
      * @param Site $site
+     * @param EventDispatcher $dispatcher
      * @return JsonResponse
      */
     public function playSite(Request $request, Site $site)
@@ -74,8 +78,11 @@ class SiteController extends AbstractController
             throw new HttpException(403, "Forbidden");
         }
 
-        $process = new Process(['nohup','/usr/bin/firefox','-new-window', $site->getUrl(),'-P','web']);
-        $process->start(null,['DISPLAY'=>':0.0']);
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener(KernelEvents::TERMINATE, function (Event $event) use ($site) {
+            $process = new Process(['/usr/bin/firefox', '-new-window', $site->getUrl(), '-P', 'web']);
+            $process->start(null, ['DISPLAY' => ':0.0']);
+        });
 
         return new JsonResponse(['success' => true]);
     }
